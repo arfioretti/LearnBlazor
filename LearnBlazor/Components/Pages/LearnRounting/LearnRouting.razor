@@ -1,0 +1,53 @@
+﻿@page "/learnrounting"
+@page "/learnrounting/{Parm1}"
+@page "/learnrounting/{Parm1}/{Parm2}"
+@page "/learnrounting/catch-all/{*PageParameters}"
+
+@using Microsoft.AspNetCore.WebUtilities
+
+@inject NavigationManager _NavigationManager
+
+<h3>LearnRouting</h3>
+
+Parm1: @Parm1
+Parm2: @Parm2
+PageParameters: @PageParameters
+
+
+@* tanto faz usar anchor tag(<a></a>) ou NavLink
+ *@@* <a href="learnrounting?Parm1=arizinho&Parm2=442" class="btn btn-primary">Navigate to query</a>
+ *@
+@*  <NavLink href="learnrounting?Parm1=arizinho&Parm2=442" class="btn btn-primary">Navigate to query</NavLink>
+ *@
+
+@*  mas tambem podemos navegar peloNavigateTo *@
+<button @onclick="NaveguePara" class="btn btn-primary">Navegue para</button>
+
+
+<button class="btn btn-success" @onclick="LoadParameters">Load Parameters</button>
+
+<div class="bg-info" style="height:1000px"></div>
+<h2 id="targetElement">Main Street</h2>
+
+@code {
+    [Parameter]
+    public string Parm1 { get; set; } = "";
+    [Parameter]
+    public string Parm2 { get; set; } = "";
+    [Parameter]
+    public string PageParameters { get; set; } = "";
+
+    private void LoadParameters()
+    {
+        var uri = new Uri(_NavigationManager.Uri);
+        var query = QueryHelpers.ParseQuery(uri.Query);
+        Parm1 = query["Parm1"];
+        Parm2 = query["Parm2"];
+
+        // _NavigationManager.Refresh(forceReload: true);
+    }
+    private void NaveguePara()
+    {
+        _NavigationManager.NavigateTo("learnrounting?Parm1=arizinho&Parm2=442");
+    }
+}

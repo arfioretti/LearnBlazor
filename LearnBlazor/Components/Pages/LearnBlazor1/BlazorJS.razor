@@ -1,0 +1,47 @@
+﻿@page "/BlazorJS"
+
+@inject IJSRuntime _IJSRuntime
+
+<h3>BlazorJS</h3>
+
+<div class="row">
+    <button @onclick="Confirmacao" class="btn btn-primary">Test confirmation button</button>
+</div>
+
+<div class="row">
+    <div class="btn btn-success m-2" style="width:200px" @onclick="ToastrSuccess">Toastr Success</div>
+    <div class="btn btn-danger m-2" style="width:200px" @onclick="ToastrFailure">Toastr Failure</div>
+</div>
+<div class="row">
+    <div class="btn btn-success m-2" style="width:200px" @onclick="SweetalertSuccess">Sweet alert Success</div>
+    <div class="btn btn-danger m-2" style="width:200px" @onclick="SweetalertFailure">Sweet alert Failure</div>
+</div>
+
+@code {
+    public string MsgConfirm { get; set; } = "alo ari";
+
+
+    private async Task Confirmacao()
+    {
+        await _IJSRuntime.InvokeAsync<bool>("confirm", MsgConfirm);
+    }
+    private async Task ToastrSuccess()
+    {
+        // await _IJSRuntime.InvokeVoidAsync("showToastr", "success", "success notifiction");
+        await _IJSRuntime.ToastrSuccess("success notifiction");
+    }
+    private async Task ToastrFailure()
+    {
+        // await _IJSRuntime.InvokeVoidAsync("showToastr", "error", "failure notifiction");
+        await _IJSRuntime.ToastrEerror("failure notifiction");
+    }
+    private async Task SweetalertSuccess()
+    {
+        await _IJSRuntime.InvokeVoidAsync("SweetAl", "success", "Task completed");
+    }
+    private async Task SweetalertFailure()
+    {
+        await _IJSRuntime.InvokeVoidAsync("SweetAl", "error", "Task failure");
+    }
+
+}
